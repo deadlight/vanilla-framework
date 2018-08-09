@@ -1,5 +1,9 @@
 # [generated] Bracketed sections updated by Yeoman generator
+<<<<<<< HEAD
 # generator-canonical-webteam@3.3.3
+=======
+# generator-canonical-webteam@3.2.1
+>>>>>>> Upgrade run script
 
 # [os] OS & editor files
 Desktop.ini
