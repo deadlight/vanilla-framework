@@ -2,11 +2,7 @@ language: node_js
 node_js:
   - '6.6.0'
 before_install:
-<<<<<<< HEAD
   - rvm install ruby
-=======
-  - rvm install 2.3.0
->>>>>>> Update Jekyll and deps
 install:
   - gem install jekyll
   - gem install percy-cli
