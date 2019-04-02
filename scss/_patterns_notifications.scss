@@ -1,7 +1,7 @@
 @import 'settings';
 
 // Notification style patterns
-@mixin vf-p-notification {
+@mixin vf-p-notifications {
   // The mixin for basic notification styling
   %vf-notification {
     @extend %vf-has-round-corners;

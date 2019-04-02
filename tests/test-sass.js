@@ -8,17 +8,16 @@ var sourceFile = argv['source-file'] || null;
 var sourceDirectory = argv['source-dir'] || 'scss';
 var outputDirectory = argv['source-dir'] || 'tests/output';
 var outputFile = argv['outputfile'] || null;
-var parkerOptions = argv['parker-options'] || null;
 var boilerplate = `
+@import 'settings';
 @import 'base';
 @include vf-base;
 `;
 
 var fs = require('fs');
 var sass = require('node-sass');
-var Parker = require('parker/lib/Parker');
-var metrics = require('parker/metrics/All'); // Or an array of the metrics you want to measure
 var components = [];
+var index = 0;
 
 if (sourceFile) {
   //TODO: add support for specifying a file
@@ -27,7 +26,7 @@ if (sourceFile) {
   // Load all sass file(s)
   fs.readdirSync(sourceDirectory).forEach(fileName => {
     if (fileName.startsWith('_patterns')) {
-      var renderedCss = '';
+      components[index] = {};
       var fileContents = fs.readFileSync(sourceDirectory + '/' + fileName, 'utf8', function(err, data) {
         if (err) {
           return console.log(err);
@@ -35,28 +34,48 @@ if (sourceFile) {
         return data;
       });
 
-      components[fileName] = [];
-      components[fileName]['sass'] = boilerplate + fileContents;
-      components[fileName]['css'] = sass
-        .renderSync({
-          data: components[fileName]['sass'],
-          includePaths: ['scss/']
-        })
-        .css.toString();
+      components[index].fileName = fileName;
+      components[index].sass = boilerplate + fileContents;
+      var importString = '\n@include vf-p-' + fileName.slice(10, -5) + ';';
+      components[index].sass += importString;
+      try {
+        components[index].css = sass
+          .renderSync({
+            data: components[index].sass,
+            includePaths: ['scss/']
+          })
+          .css.toString();
+        components[index].cssSize = getSizeInKb(components[index].css);
+      } catch (error) {
+        console.log('ERROR: Failed to build sass for: ' + fileName);
+      }
     }
+    index++;
   });
 }
 
-// run css through parker
-var parker = new Parker(metrics);
-for (fileName in components) {
-  components[fileName]['report'] = parker.run(components[fileName]['css']);
-  // Display sumamry / output to file
-  console.log(fileName);
-  console.log(components[fileName]['report']);
-  if (fs.writeFileSync(outputDirectory + '/' + fileName + '.report.json', util.inspect(components[fileName]['report'], false, 2, false))) {
-    console.log('Report saved to: ' + outputDirectory + fileName + '.report.json');
-  } else {
-    console.log('Unable to write file.');
+components.sort(function(a, b) {
+  return b.cssSize - a.cssSize;
+});
+
+components.forEach(function(component) {
+  console.log(padWithSpaces(component.fileName, 35) + ' ' + component.cssSize + 'kb');
+});
+
+function getSizeInKb(string) {
+  var bytes = Buffer.byteLength(string, 'utf8');
+  return Math.round(bytes / 1000) - 38; //base adds 38kb
+}
+
+function padWithSpaces(raw, length) {
+  var output = raw;
+  var pad = length - raw.length;
+
+  if (pad > 0) {
+    for (i = 0; i < pad; i++) {
+      output = output + ' ';
+    }
   }
+
+  return output;
 }
