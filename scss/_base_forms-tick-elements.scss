@@ -460,47 +460,24 @@ $box-offsets-top: (
     }
   }
 
-  @if (map-get($theme-default--dark, forms) == true) {
-    [type='checkbox'] {
-      @extend %vf-tick-elements--dark-theme;
-      @extend %vf-checkbox--dark-theme;
-    }
+  [type='checkbox'] {
+    @extend %vf-tick-elements--light-theme;
+    @extend %vf-checkbox--light-theme;
+  }
 
-    [type='radio'] {
-      @extend %vf-tick-elements--dark-theme;
-      @extend %vf-radio--dark-theme;
-    }
+  [type='radio'] {
+    @extend %vf-tick-elements--light-theme;
+    @extend %vf-radio--light-theme;
+  }
 
-    // sass-lint:disable no-qualifying-elements
-    [type='checkbox'].is-light {
-      @extend %vf-tick-elements--light-theme;
-      @extend %vf-checkbox--light-theme;
-    }
+  // sass-lint:disable no-qualifying-elements
+  [type='checkbox'].is-dark {
+    @extend %vf-tick-elements--dark-theme;
+    @extend %vf-checkbox--dark-theme;
+  }
 
-    [type='radio'].is-light {
-      @extend %vf-tick-elements--light-theme;
-      @extend %vf-radio--light-theme;
-    }
-  } @else {
-    [type='checkbox'] {
-      @extend %vf-tick-elements--light-theme;
-      @extend %vf-checkbox--light-theme;
-    }
-
-    [type='radio'] {
-      @extend %vf-tick-elements--light-theme;
-      @extend %vf-radio--light-theme;
-    }
-
-    // sass-lint:disable no-qualifying-elements
-    [type='checkbox'].is-dark {
-      @extend %vf-tick-elements--dark-theme;
-      @extend %vf-checkbox--dark-theme;
-    }
-
-    [type='radio'].is-dark {
-      @extend %vf-tick-elements--dark-theme;
-      @extend %vf-radio--dark-theme;
-    }
+  [type='radio'].is-dark {
+    @extend %vf-tick-elements--dark-theme;
+    @extend %vf-radio--dark-theme;
   }
 }
