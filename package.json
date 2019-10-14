@@ -26,7 +26,7 @@
     "url": "https://github.com/canonical-web-and-design/vanilla-framework"
   },
   "scripts": {
-    "build": "node-sass --include-paths node_modules scss --source-map true --output-style compressed --output build/css && postcss --use autoprefixer --replace 'build/css/**/*.css' --no-map",
+    "build": "node-sass --include-paths node_modules scss --source-map true --output-style compressed --output build/css && postcss --use autoprefixer --replace 'build/css/**/*.css' --no-map && cp node_modules/lazysizes/lazysizes.min.js docs/js/",
     "build-docs-css": "node-sass --include-path node_modules docs/sass --source-map true --output-style compressed --output docs/css",
     "build-docs-site": "bundle exec jekyll build --source docs --destination docs/_site",
     "build-docs": "yarn run build && yarn run build-docs-css && yarn run build-docs-site",
@@ -51,7 +51,8 @@
     "sass-lint": "1.12.1",
     "prettier": "1.14.3",
     "pretty-quick": "1.10.0",
-    "watch-cli": "0.2.3"
+    "watch-cli": "0.2.3",
+    "lazysizes": "5.1.1"
   },
   "husky": {
     "hooks": {
